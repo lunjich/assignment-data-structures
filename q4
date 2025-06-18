@@ -1,0 +1,51 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+const int SIZE = 30;
+int arr[SIZE];
+int freq[31] = {0};
+
+void countFrequency(int index) {
+    if (index == SIZE) return;
+    freq[arr[index]]++;
+    countFrequency(index + 1);
+}
+
+void sortFrequencies(int numbers[], int frequency[], int n) {
+    for (int i = 0; i < n-1; i++) {
+        for (int j = i+1; j < n; j++) {
+            if (frequency[i] > frequency[j]) {
+                swap(frequency[i], frequency[j]);
+                swap(numbers[i], numbers[j]);
+            }
+        }
+    }
+}
+
+int main() {
+    srand(time(0));
+
+    for (int i = 0; i < SIZE; i++)
+        arr[i] = rand() % 31;
+
+    countFrequency(0);
+
+    int numbers[31], freqs[31], count = 0;
+    for (int i = 0; i <= 30; i++) {
+        if (freq[i] > 0) {
+            numbers[count] = i;
+            freqs[count] = freq[i];
+            count++;
+        }
+    }
+
+    sortFrequencies(numbers, freqs, count);
+
+    cout << "Number\tFrequency\n";
+    for (int i = 0; i < count; i++)
+        cout << numbers[i] << "\t" << freqs[i] << endl;
+
+    return 0;
+}
