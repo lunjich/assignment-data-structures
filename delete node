@@ -1,0 +1,219 @@
+
+#include <iostream>
+
+using namespace std;
+
+#define COUNT 10
+
+class Node
+{
+public:
+
+    int key;
+    Node *left, *right;
+};
+
+// A utility function to create a new BST Node
+Node *newNode(int item)
+{
+    Node *temp=new Node ;
+    temp->key = item;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+void printPreorder(Node* node)
+{
+     if (node == NULL)
+          return;
+
+     /* first print data of Node */
+     cout<< node->key<<endl;
+
+     /* then recur on left sutree */
+     printPreorder(node->left);
+
+     /* now recur on right subtree */
+     printPreorder(node->right);
+}
+
+// A utility function to do inorder traversal of BST
+void inorder(Node* node)
+{
+    if (node == NULL)
+          return;
+        inorder(node->left);
+       cout<< node->key<<endl;
+        inorder(node->right);
+
+}
+void printPostorder(Node* node)
+{
+     if (node == NULL)
+        return;
+
+     // first recur on left subtree
+     printPostorder(node->left);
+
+     // then recur on right subtree
+     printPostorder(node->right);
+
+     // now deal with the Node
+     cout<< node->key<<endl;
+}
+/* A utility function to insert a new Node with given key in BST */
+Node* insertNode(Node*node, int key)
+{
+    /* If the tree is empty, return a new Node */
+    if (node == NULL) return newNode(key);
+
+    /* Otherwise, recur down the tree */
+    if (key < node->key)
+        node->left  = insertNode(node->left, key);
+    else if (key > node->key)
+        node->right = insertNode(node->right, key);
+
+    /* return the (unchanged) Node pointer */
+    return node;
+}
+// write a function to insert elements without using recursion
+Node* insertNodeNormal(Node*node, int key)
+{
+    /* If the tree is empty, return a new Node */
+    if (node == NULL)
+        return newNode(key);
+
+    /* Otherwise, recur down the tree */
+     while (node){
+
+    if (key < node->key)
+        {
+            if(node->left==NULL)
+                {node->left=newNode(key);
+                  break;
+                }
+            node=node->left;
+        }
+    else if (key > node->key)
+        {
+             if(node->right==NULL)
+                {node->right=newNode(key);
+                break;
+
+                }
+            node=node->right;
+        }
+   }
+
+    /* return the (unchanged) Node pointer */
+    return node;
+}
+
+int searchNode(Node* node, int key)
+{
+   while (node){
+
+
+    if(key==node->key)
+        return 1;
+
+    if (key < node->key)
+        node=node->left;
+    else if (key > node->key)
+        node=node->right;
+
+   }
+   return 0;
+}
+
+
+
+Node * minValueNode(Node* node)
+{
+    Node* current = node;
+
+    /* loop down to find the leftmost leaf */
+    while (current->left != NULL)
+        current = current->left;
+
+    return current;
+}
+
+void displayTree(Node *root, int space)
+{
+    // Base case
+    if (root == NULL)
+        return;
+
+    // Increase distance between levels
+    space += COUNT;
+
+    // Process right child first
+    displayTree(root->right, space);
+
+    // Print current node after space
+    // count
+    cout<<endl;
+    for (int i = COUNT; i < space; i++)
+        cout<<" ";
+    cout<<root->key<<endl;
+
+    // Process left child
+    displayTree(root->left, space);
+}
+
+void makeDeletion(Node *&nodePtr)
+{
+	Node *tempNodePtr, *tempNodePtr2;	// Temporary pointer, used in reattaching the left subtree.
+
+    // case 1: node with no children
+    // fill here
+
+       //case 2: if node has one child
+       // fill here
+
+	//case 3: If the node has two children.
+	// fill here
+
+}
+
+void deleteNode(int num, Node *&nodePtr)
+{
+// find a node with value num and call makeDeletion(nodePtr);
+// fill here
+}
+
+
+// Driver Program to test above functions
+int main()
+{
+
+    Node *root = NULL;
+    root = insertNode(root, 50);
+    insertNode(root, 30);
+    insertNode(root, 20);
+    insertNode(root, 40);
+    insertNode(root, 70);
+    insertNode(root, 60);
+    insertNode(root, 80);
+    insertNodeNormal(root, 10);
+
+    displayTree(root,3);
+
+    // print iNoder traversal of the BST
+    cout<<"inorder \n"<<endl;
+    inorder(root);
+    cout<<"postorder"<<endl;
+    printPostorder(root);
+    cout<<"preorder \n"<<endl;
+    printPreorder(root);
+    cout<< searchNode(root,3333)<<endl;
+
+    cout<<"min value ="<< minValueNode(root)->key<<endl;
+
+    deleteNode(40,root);
+    displayTree(root,3);
+
+    return 0;
+}
+
